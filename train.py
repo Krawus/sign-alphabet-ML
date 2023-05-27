@@ -20,8 +20,11 @@ df = pd.read_csv('WZUMdataset.csv')
 
 X = df.iloc[:, 1:64]
 X['hand'] = df['handedness.label']
-le = LabelEncoder()
-X['hand'] = le.fit_transform(X['hand'])
+handLabelEncoder = LabelEncoder()
+X['hand'] = handLabelEncoder.fit_transform(X['hand'])
+
+joblib.dump(handLabelEncoder, "hand_label_encoder.pkl")
+
 
 y = df.letter
 
@@ -52,13 +55,14 @@ for clf in clfs:
 
 #found using gridSearch
 SVCmodel = SVC(C=10000, coef0=0.00, degree=2, kernel='poly', gamma='scale')
+
 SVCmodel.fit(X_train, y_train)
 print("SVC score: ", SVCmodel.score(X_test, y_test))
 joblib.dump(SVCmodel, "SVCmodel.pkl")
 
 
-MLPmodel = MLPClassifier(hidden_layer_sizes=(100,100), activation='tanh', solver='adam', alpha=0.001, learning_rate='constant',
-                         max_iter=5000, beta_1=0.8, beta_2=0.88)
+# MLPmodel = MLPClassifier(hidden_layer_sizes=(100,100), activation='tanh', solver='adam', alpha=0.001, learning_rate='constant',
+#                          max_iter=5000, beta_1=0.8, beta_2=0.88)
 
-MLPmodel.fit(X_train, y_train)
-print("MLP score: ", MLPmodel.score(X_test, y_test))
+# MLPmodel.fit(X_train, y_train)
+# print("MLP score: ", MLPmodel.score(X_test, y_test))

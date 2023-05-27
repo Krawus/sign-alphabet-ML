@@ -24,9 +24,8 @@ if __name__ == "__main__":
     X = df.iloc[:, 1:64]
     # encode hand string -> "Left" is 0, "Right" is 1
     X['hand'] = df['handedness.label']
-    le = LabelEncoder()
-    X['hand'] = le.fit_transform(X['hand'])
-
+    handLabelEncoder = joblib.load("hand_label_encoder.pkl")
+    X['hand'] = handLabelEncoder.transform(X['hand'])
 
     ## TODO @@@@@@@@ TO DELETE WHEN DEPLOY @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     # y = df.letter
